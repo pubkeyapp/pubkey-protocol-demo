@@ -1,1 +1,13 @@
-/tmp
+.DS_Store
+/node_modules/
+
+# React Router
+/web/.react-router/
+/build/
+.env
+
+# Logs
+logs
+*.log
+pnpm-debug.log*
+tmp
