@@ -6,17 +6,23 @@ import { UiCard } from '~/ui/ui-card'
 import { UiContainer } from '~/ui/ui-container'
 import { useThemes } from '~/ui/use-themes'
 import type { Route } from './+types/route-dashboard'
+import { WalletMultiButton } from '@pubkeyapp/wallet-adapter-mantine-ui'
+import { redirect } from 'react-router'
 
 export function meta() {
   return appMeta('Dashboard')
 }
 
 export async function loader({ request }: Route.LoaderArgs) {
-  const user = await ensureUser(request)
-  ph.capture({ distinctId: user.id, event: 'route-dashboard', properties: { path: '/dashboard' } })
-  await ph.shutdown()
+  try {
+    const user = await ensureUser(request)
+    ph.capture({ distinctId: user.id, event: 'route-dashboard', properties: { path: '/dashboard' } })
+    await ph.shutdown()
 
-  return { user }
+    return { user }
+  } catch {
+    return redirect('/login')
+  }
 }
 
 export default function RouteDashboard({ loaderData: { user } }: Route.ComponentProps) {
@@ -26,13 +32,9 @@ export default function RouteDashboard({ loaderData: { user } }: Route.Component
   return (
     <UiContainer py="md" size="md" mb="xl">
       <Stack>
-        <UiCard
-          title="Dashboard"
-          description={`Hey, ${user.username}!`}
-          style={{ backgroundColor }}
-          shadow="md"
-          withBorder={false}
-        />
+        <UiCard title={`Hey, ${user.username}!`} style={{ backgroundColor }} shadow="md" withBorder={false}>
+          <WalletMultiButton size="xl" />
+        </UiCard>
       </Stack>
     </UiContainer>
   )

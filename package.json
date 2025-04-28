@@ -1,5 +1,7 @@
 {
   "name": "web",
+  "private": true,
+  "type": "module",
   "scripts": {
     "build": "react-router build",
     "dev": "react-router dev",
@@ -12,6 +14,7 @@
   },
   "dependencies": {
     "@coji/remix-auth-google": "^4.2.0",
+    "@coral-xyz/anchor": "^0.31.0",
     "@mantine/code-highlight": "^7.17.3",
     "@mantine/core": "^7.17.3",
     "@mantine/dates": "^7.17.3",
@@ -24,9 +27,16 @@
     "@metaplex-foundation/umi-bundle-defaults": "^1.1.1",
     "@metaplex-foundation/umi-web3js-adapters": "^1.1.1",
     "@prisma/client": "^6.5.0",
+    "@pubkey-protocol/anchor": "^1.0.2",
+    "@pubkey-protocol/sdk": "^1.0.2",
+    "@pubkeyapp/wallet-adapter-mantine-ui": "^2.4.3",
     "@react-router/node": "^7.5.0",
     "@react-router/serve": "^7.5.0",
+    "@solana/wallet-adapter-base": "^0.9.25",
+    "@solana/wallet-adapter-react": "^0.15.37",
+    "@solana/wallet-adapter-react-ui": "^0.9.37",
     "@solana/web3.js": "^1.98.0",
+    "@tanstack/react-query": "^5.74.4",
     "arctic": "^3.6.0",
     "bcryptjs": "^3.0.2",
     "dayjs": "^1.11.13",
@@ -56,6 +66,7 @@
     "postcss-simple-vars": "^7.0.1",
     "prettier": "^3.5.3",
     "react-router-devtools": "^1.1.0",
+    "tslib": "^2.8.1",
     "typescript": "^5.7.2",
     "vite": "^5.4.11",
     "vite-plugin-icons-spritesheet": "^3.0.1",
@@ -64,7 +75,5 @@
   "files": [
     "build",
     "prisma"
-  ],
-  "private": true,
-  "type": "module"
+  ]
 }

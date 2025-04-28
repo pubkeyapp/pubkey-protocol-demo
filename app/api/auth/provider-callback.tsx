@@ -18,7 +18,7 @@ export async function loader({ params: { provider }, request }: Route.LoaderArgs
   const session = await getSession(request.headers.get('Cookie'))
   session.set('user', user)
 
-  return redirect('/dashboard', {
+  return redirect('/profile', {
     headers: {
       'Set-Cookie': await commitSession(session),
     },

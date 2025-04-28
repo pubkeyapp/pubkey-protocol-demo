@@ -70,7 +70,7 @@ export const NullsOrderSchema = z.enum(['first','last']);
 
 export const JsonNullValueFilterSchema = z.enum(['DbNull','JsonNull','AnyNull',]).transform((value) => value === 'JsonNull' ? Prisma.JsonNull : value === 'DbNull' ? Prisma.JsonNull : value === 'AnyNull' ? Prisma.AnyNull : value);
 
-export const IdentityProviderSchema = z.enum(['Google']);
+export const IdentityProviderSchema = z.enum(['Discord','Github','Google','Solana','Telegram','X']);
 
 export type IdentityProviderType = `${z.infer<typeof IdentityProviderSchema>}`
 

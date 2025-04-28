@@ -20,7 +20,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   const user = await getUser(request)
   if (user) {
     logger.info({ event: 'auth_login_redirect', userId: user.id, message: 'User already logged in' })
-    return redirect('/dashboard')
+    return redirect('/profile')
   }
   return data(null)
 }

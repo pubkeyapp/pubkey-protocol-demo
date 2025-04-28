@@ -8,6 +8,8 @@ import { Theme, ThemeProvider, useTheme } from 'remix-themes'
 import { themeSessionResolver } from '~/lib/sessions.server'
 import { UiContextProvider } from '~/ui/ui-context-provider'
 import { UiThemeProvider } from '~/ui/ui-theme-provider'
+import { SolanaProvider } from '~/lib/solana-provider'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 const defaultTheme = Theme.DARK
 
@@ -50,13 +52,18 @@ function LayoutDocument({ children }: { children: ReactNode }) {
   )
 }
 
+const client = new QueryClient()
 export default function App() {
   const { colorScheme } = useMantineColorScheme()
   const isDark = colorScheme === 'dark'
   return (
-    <UiContextProvider config={{ name: 'PubKey', logo: isDark ? '/logo-dark.png' : '/logo-light.png' }}>
-      <Outlet />
-    </UiContextProvider>
+    <QueryClientProvider client={client}>
+      <UiContextProvider config={{ name: 'PubKey', logo: isDark ? '/logo-dark.png' : '/logo-light.png' }}>
+        <SolanaProvider>
+          <Outlet />
+        </SolanaProvider>
+      </UiContextProvider>
+    </QueryClientProvider>
   )
 }
 

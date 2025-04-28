@@ -17,7 +17,7 @@ if (!authGoogleClientId || !authGoogleClientSecret) {
 const redirectURI = `${process.env.API_URL}/api/auth/google/callback`
 
 export const googleStrategy = new GoogleStrategy<User>(
-  { clientId: authGoogleClientId, clientSecret: authGoogleClientSecret, redirectURI, prompt: 'consent' },
+  { clientId: authGoogleClientId, clientSecret: authGoogleClientSecret, redirectURI, prompt: 'select_account' },
   async ({ request, tokens }) => {
     const identityProfile = await GoogleStrategy.userProfile(tokens)
     const profile = convertProfileToUser(identityProfile, tokens)

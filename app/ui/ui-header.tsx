@@ -28,7 +28,7 @@ export function UiHeader({ basePath = '/', hasNavbar = false, links = [], opened
         {links.length ? (
           <Group wrap="nowrap" gap="xs">
             {links.map((link) => {
-              const isActive = basePath === pathname ? pathname === link.to : pathname.startsWith(link.to)
+              const isActive = basePath === pathname ? pathname === link.to : link.to?.startsWith(pathname)
               return (
                 <Button size="xs" key={link.to} component={Link} to={link.to} variant={isActive ? 'filled' : 'light'}>
                   {link.label}
@@ -39,8 +39,8 @@ export function UiHeader({ basePath = '/', hasNavbar = false, links = [], opened
         ) : null}
       </Group>
       <Group justify="center" align="center" wrap="nowrap" gap="xs">
-        <UiThemeToggle />
         {profile}
+        <UiThemeToggle />
       </Group>
     </Group>
   )

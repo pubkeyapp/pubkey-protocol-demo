@@ -6,6 +6,8 @@ import type { UiHeaderLink } from '~/ui/ui-header'
 import { UiLayout } from '~/ui/ui-layout'
 import { UiProfileMenu } from '~/ui/ui-profile-menu'
 import type { Route } from './+types/layout-app'
+import { Group } from '@mantine/core'
+import { WalletMultiIcon } from '@pubkeyapp/wallet-adapter-mantine-ui'
 
 export async function loader({ request }: Route.LoaderArgs) {
   const user = await ensureUser(request)
@@ -25,6 +27,16 @@ export default function LayoutApp({ loaderData: { user } }: Route.ComponentProps
     links.push({ label: 'Admin', to: '/admin' })
   }
   return (
-    <UiLayout basePath="/" headerLinks={links} headerProfile={<UiProfileMenu user={user} />} footer={<UiFooter />} />
+    <UiLayout
+      basePath="/"
+      headerLinks={links}
+      headerProfile={
+        <Group justify="center" align="center" wrap="nowrap" gap="xs">
+          <WalletMultiIcon size="md" />
+          <UiProfileMenu user={user} />
+        </Group>
+      }
+      footer={<UiFooter />}
+    />
   )
 }

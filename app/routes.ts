@@ -1,5 +1,8 @@
 import { index, layout, prefix, route, type RouteConfig } from '@react-router/dev/routes'
 import { adminUserRoutes } from './features/user'
+import { onboardingRoutes } from './features/onboarding'
+import { devRoutes } from './features/dev'
+import { pubkeyRoutes } from './features/pubkey'
 
 export default [
   ...prefix('api', [
@@ -19,6 +22,9 @@ export default [
       ]),
     ]),
   ]),
+  devRoutes,
+  pubkeyRoutes,
+  layout('features/onboarding/layout-onboarding.tsx', [...onboardingRoutes]),
   // App routes go here
   layout('features/app/layout-app.tsx', [
     route('dashboard', 'features/app/route-dashboard.tsx'),

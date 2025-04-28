@@ -14,4 +14,8 @@ export default defineConfig({
     reactRouter(),
     tsconfigPaths(),
   ],
+  ssr: {
+    // Ensure external dependencies are handled correctly
+    noExternal: ['@pubkeyapp/wallet-adapter-mantine-ui'],
+  },
 })

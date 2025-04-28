@@ -1,4 +1,4 @@
-import { Button, Stack, Text } from '@mantine/core'
+import { Button, Divider, Stack, Text } from '@mantine/core'
 import { Link, redirect } from 'react-router'
 import { ensureUser } from '~/features/auth/data-access/ensure-user'
 import { ProfileUiFormUpdate } from '~/features/profile/ui/profile-ui-form-update'
@@ -10,19 +10,22 @@ import { UiContainer } from '~/ui/ui-container'
 import { UiDebug } from '~/ui/ui-debug'
 import { useThemes } from '~/ui/use-themes'
 import type { Route } from './+types/profile-feature'
+import { UiIcon } from '~/ui/ui-icon'
+import { IdentityProvider } from '@prisma/client'
 
 export function meta() {
   return appMeta('Dashboard')
 }
 
 export async function loader({ request }: Route.LoaderArgs) {
-  const user = await ensureUser(request)
-  if (!user) {
+  try {
+    const user = await ensureUser(request)
+    ph.capture({ distinctId: user.id, event: 'route-dashboard', properties: { path: '/dashboard' } })
+    await ph.shutdown()
+    return { user, providers: Object.values(IdentityProvider) }
+  } catch {
     return redirect('/login')
   }
-  ph.capture({ distinctId: user.id, event: 'route-profile', properties: { path: '/profile' } })
-  await ph.shutdown()
-  return { user }
 }
 
 export async function action({ request, params: { id } }: Route.ActionArgs) {
@@ -70,13 +73,29 @@ export default function ProfileFeature({ loaderData }: Route.ComponentProps) {
               <Text size="sm" c="dimmed">
                 {item.provider}
               </Text>
-              <UiDebug data={item} defaultExpanded={true} withExpandButton={false} />
+              <UiDebug data={item} withExpandButton={false} />
             </div>
           ))}
 
           <Button component={Link} to="/api/auth/google">
             Add Google Identity
           </Button>
+          <Divider />
+
+          <Stack align="flex-start">
+            {loaderData.providers.map((provider) => (
+              <Button
+                key={provider}
+                component={Link}
+                to={`/api/auth/${provider.toLowerCase()}`}
+                size="lg"
+                variant="outline"
+                leftSection={<UiIcon name={provider} size="lg" />}
+              >
+                Add {provider} identity
+              </Button>
+            ))}
+          </Stack>
         </UiCard>
         <UiDebug data={loaderData} />
       </Stack>

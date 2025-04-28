@@ -2,7 +2,7 @@ import { redirect } from 'react-router'
 import { authenticator } from '~/lib/authenticator.server'
 import { logger } from '~/lib/logger'
 import { commitSession, getSession } from '~/lib/sessions.server'
-import { ph } from "~/lib/get-post-hog.server";
+import { ph } from '~/lib/get-post-hog.server'
 
 export async function authHandleUserLoginRequest(request: Request) {
   const user = await authenticator.authenticate('user-pass', request)
@@ -20,7 +20,7 @@ export async function authHandleUserLoginRequest(request: Request) {
   await ph.shutdown()
 
   logger.info({ event: 'auth_login_success', userId: user.id })
-  return redirect('/dashboard', {
+  return redirect('/profile', {
     headers: {
       'Set-Cookie': await commitSession(session),
     },
