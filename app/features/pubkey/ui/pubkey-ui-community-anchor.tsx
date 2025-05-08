@@ -9,7 +9,7 @@ export interface PubkeyUiCommunityAnchorProps extends TextProps {
   to?: string
 }
 
-export function PplUiCommunityAnchor({ community, name, slug, to, ...props }: PubkeyUiCommunityAnchorProps) {
+export function PubkeyUiCommunityAnchor({ community, name, slug, to, ...props }: PubkeyUiCommunityAnchorProps) {
   return to?.length ? (
     <Anchor component={Link} to={to} size="xl" fw="bold" {...props}>
       {community.name}

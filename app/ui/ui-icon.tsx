@@ -13,7 +13,7 @@ export function UiIcon({
   size?: MantineSize
 }) {
   const sizePx = getSize(size)
-  console.log(sizePx)
+
   if (!iconNames.includes(name)) {
     console.log(`Icon ${name} not found`)
     return <LucideMessageCircleQuestion size={sizePx} />

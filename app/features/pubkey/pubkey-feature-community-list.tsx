@@ -5,9 +5,9 @@ import { UiAlert } from '~/ui/ui-alert'
 import { Link } from 'react-router'
 import { UiPage } from '~/ui/ui-page'
 import { LucideGroup, LucidePlus } from 'lucide-react'
-import { PubkeyUiCommunityList } from '~/features/pubkey/ui/pubkey-ui-community-item'
 import type { PubKeyCommunity } from '@pubkey-protocol/sdk'
 import { getPubkeySdkCommunity } from '~/lib/pubkey/get-pubkey-sdk-community'
+import { PubkeyUiCommunityList } from '~/features/pubkey/ui/pubkey-ui-community-list'
 
 export function meta() {
   return appMeta('Communities')

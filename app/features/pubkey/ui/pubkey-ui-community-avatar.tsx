@@ -5,6 +5,6 @@ export interface PubkeyUiCommunityAvatarProps extends AvatarProps {
   community: PubKeyCommunity
 }
 
-export function PplUiCommunityAvatar({ community: { avatarUrl, name }, ...props }: PubkeyUiCommunityAvatarProps) {
+export function PubkeyUiCommunityAvatar({ community: { avatarUrl, name }, ...props }: PubkeyUiCommunityAvatarProps) {
   return <Avatar src={avatarUrl ? avatarUrl : null} name={name} color="initials" radius="xs" size="lg" {...props} />
 }

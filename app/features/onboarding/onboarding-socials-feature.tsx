@@ -1,13 +1,24 @@
-import { Link } from 'react-router'
-import { Anchor, Container, Text } from '@mantine/core'
+import { useNavigate } from 'react-router'
+import { OnboardingUiPage } from '~/features/onboarding/ui/onboarding-ui-page'
+import { OnboardingUiSocials } from '~/features/onboarding/ui/onboarding-ui-socials'
+import type { Route } from './+types/onboarding-socials-feature'
+import { pubkeyConfig } from '~/pubkey/data-access/pubkey-config'
 
-export default function OnboardingSocialsFeature() {
+export async function loader() {
+  return { providers: pubkeyConfig.providers }
+}
+
+export default function OnboardingSocialsFeature({ loaderData: { providers } }: Route.ComponentProps) {
+  const navigate = useNavigate()
+
   return (
-    <Container>
-      <Text size="lg">Onboarding Socials</Text>
-      <Anchor component={Link} to="/onboarding/wallets">
-        Go to Wallets
-      </Anchor>
-    </Container>
+    <OnboardingUiPage title="Sign in" description="Sign in using a Social identity, you can later add more.">
+      <OnboardingUiSocials
+        handleClick={() => {
+          navigate('/onboarding/wallets')
+        }}
+        providers={providers}
+      />
+    </OnboardingUiPage>
   )
 }
