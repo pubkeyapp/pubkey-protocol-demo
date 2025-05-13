@@ -5,6 +5,9 @@ import type { Route } from './+types/user-solana-wallet'
 import { useWallet } from '@solana/wallet-adapter-react'
 import { solanaAuth } from '~/lib/solana-auth/solana-auth'
 import type { SolanaAuthMessage, SolanaAuthMessageSigned } from '~/lib/solana-auth/solana-auth-message'
+import { getUserBySolanaIdentity } from '~/features/auth/data-access/get-user-by-solana-identity'
+import { getUser } from '~/features/auth/data-access/get-user'
+import { getSolanaVerificationType, SolanaVerificationType } from './get-solana-verification-type'
 
 function parsePayload(payload: string = ''): SolanaAuthMessageSigned {
   try {
@@ -23,8 +26,27 @@ export async function action({ request }: Route.LoaderArgs) {
   if (!publicKey) {
     return { success: false, message: `No public key` }
   }
+  const actor = await getUser(request)
+  const owner = await getUserBySolanaIdentity({ providerId: publicKey })
 
-  console.log(`user-solana-wallet -> action`, action, 'publicKey', publicKey)
+  // This determines the type of verification we are performing
+  const verification = getSolanaVerificationType({
+    actorId: actor?.id ?? undefined,
+    ownerId: owner?.id ?? undefined,
+    enabledTypes: [
+      SolanaVerificationType.Login,
+      SolanaVerificationType.Link,
+      SolanaVerificationType.Register,
+      SolanaVerificationType.Verify,
+    ],
+  })
+  if (verification.type === SolanaVerificationType.Error) {
+    return { success: false, message: verification.message }
+  }
+
+  console.log(
+    `user-solana-wallet [${action}] -> publicKey: ${publicKey} -> owner: ${owner ? owner.username : 'NONE'} -> type: ${verification.type}`,
+  )
 
   switch (formData.get('action')) {
     case 'sign-message-create':
@@ -34,16 +56,24 @@ export async function action({ request }: Route.LoaderArgs) {
         type: 'solana-auth-message',
       }
     case 'sign-message-verify':
-      const { message, signature, blockhash, nonce } = parsePayload(payload)
-      console.log(`sign message -> verify`, 'message', message, 'signature', signature, 'blockhash', blockhash)
-      const result = await solanaAuth.verifyMessage({
-        method: 'solana:signMessage',
-        publicKey,
-        message,
-        signature,
-        blockhash,
-        nonce,
-      })
+      const parsed = parsePayload(payload)
+      const result = await solanaAuth.verifyMessage(parsed)
+      if (!result) {
+        throw new Error('Invalid signature')
+      }
+      console.log(`sign message -> verify`, 'message', parsed, 'signature', parsed.signature, 'result', result)
+      if (verification.type === SolanaVerificationType.Link) {
+        // We should link the wallet to the actor.
+      }
+      if (verification.type === SolanaVerificationType.Login) {
+        // We should set the cookie.
+      }
+      if (verification.type === SolanaVerificationType.Verify) {
+        // We don't need to do anything? 🤷‍♂️
+      }
+      if (verification.type === SolanaVerificationType.Register) {
+        // We should register a new user.
+      }
       return {
         success: true,
         message: result,
