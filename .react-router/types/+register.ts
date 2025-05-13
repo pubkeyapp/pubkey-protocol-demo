@@ -44,6 +44,7 @@ type Params = {
   "/onboarding/done": {};
   "/dashboard": {};
   "/profile": {};
+  "/solana": {};
   "/login": {};
   "/logout": {};
   "/about": {};

@@ -3,6 +3,7 @@ import { adminUserRoutes } from './features/user'
 import { onboardingRoutes } from './features/onboarding'
 import { devRoutes } from './features/dev'
 import { pubkeyRoutes } from './features/pubkey'
+import { userSolanaRoutes } from './features/solana'
 
 export default [
   ...prefix('api', [
@@ -29,6 +30,7 @@ export default [
   layout('features/app/layout-app.tsx', [
     route('dashboard', 'features/app/route-dashboard.tsx'),
     route('profile', 'features/profile/profile-feature.tsx'),
+    userSolanaRoutes,
   ]),
   // Auth routes go here
   layout('features/auth/layout-auth.tsx', [
