@@ -1,7 +1,6 @@
 import { Stack } from '@mantine/core'
 import { ensureUser } from '~/features/auth/data-access/ensure-user'
 import { appMeta } from '~/lib/app-meta'
-import { ph } from '~/lib/get-post-hog.server'
 import { UiCard } from '~/ui/ui-card'
 import { UiContainer } from '~/ui/ui-container'
 import { useThemes } from '~/ui/use-themes'
@@ -16,8 +15,6 @@ export function meta() {
 export async function loader({ request }: Route.LoaderArgs) {
   try {
     const user = await ensureUser(request)
-    ph.capture({ distinctId: user.id, event: 'route-dashboard', properties: { path: '/dashboard' } })
-    await ph.shutdown()
 
     return { user }
   } catch {

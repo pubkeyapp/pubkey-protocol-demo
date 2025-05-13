@@ -4,7 +4,6 @@ import { ensureUser } from '~/features/auth/data-access/ensure-user'
 import { ProfileUiFormUpdate } from '~/features/profile/ui/profile-ui-form-update'
 import { appMeta } from '~/lib/app-meta'
 import { userUpdateProfile } from '~/lib/core/user-update-profile'
-import { ph } from '~/lib/get-post-hog.server'
 import { UiCard } from '~/ui/ui-card'
 import { UiContainer } from '~/ui/ui-container'
 import { UiDebug } from '~/ui/ui-debug'
@@ -20,8 +19,6 @@ export function meta() {
 export async function loader({ request }: Route.LoaderArgs) {
   try {
     const user = await ensureUser(request)
-    ph.capture({ distinctId: user.id, event: 'route-dashboard', properties: { path: '/dashboard' } })
-    await ph.shutdown()
     return { user, providers: Object.values(IdentityProvider) }
   } catch {
     return redirect('/login')
