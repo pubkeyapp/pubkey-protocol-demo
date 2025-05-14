@@ -22,6 +22,7 @@ export default function LayoutApp({ loaderData: { user } }: Route.ComponentProps
   const links: UiHeaderLink[] = [
     { label: 'Dashboard', to: '/dashboard' },
     { label: 'Profile', to: '/profile' },
+    { label: 'Solana', to: '/solana' },
   ]
   if (user.admin) {
     links.push({ label: 'Admin', to: '/admin' })

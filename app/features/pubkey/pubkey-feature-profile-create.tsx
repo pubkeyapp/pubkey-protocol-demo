@@ -12,8 +12,9 @@ import { UiCard } from '~/ui/ui-card'
 import { PubkeyUiProfileCreateForm } from './ui/pubkey-ui-profile-create-form'
 import { getPubkeySdkCommunity } from '~/lib/pubkey/get-pubkey-sdk-community'
 import { useConnection, useWallet } from '@solana/wallet-adapter-react'
-import { PublicKey, VersionedTransaction } from '@solana/web3.js'
+import { VersionedTransaction } from '@solana/web3.js'
 import { base58 } from '@metaplex-foundation/umi'
+import { isValidSolanaPubKey } from '~/lib/solana/is-valid-solana-pubkey'
 
 export function meta() {
   return appMeta('Profiles')
@@ -112,14 +113,6 @@ export default function PubkeyFeatureCommunityCreate({ loaderData: { config } }:
       </Container>
     </UiPage>
   )
-}
-
-function isValidSolanaPubKey(address: string) {
-  try {
-    return !!new PublicKey(address)
-  } catch {
-    return false
-  }
 }
 
 function txToBase58(tx: VersionedTransaction): string {
