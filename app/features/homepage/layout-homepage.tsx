@@ -1,14 +1,14 @@
 import { Button } from '@mantine/core'
 import React from 'react'
 import { Link } from 'react-router'
-import { getUser } from '~/features/auth/data-access/get-user'
 import { UiFooter } from '~/ui/ui-footer'
 import { UiLayout } from '~/ui/ui-layout'
 import { UiProfileMenu } from '~/ui/ui-profile-menu'
 import type { Route } from './+types/layout-homepage'
+import { getUserFromRequest } from '~/lib/core/get-user-from-request'
 
 export async function loader({ request }: Route.LoaderArgs) {
-  const user = await getUser(request)
+  const user = await getUserFromRequest(request)
 
   return { user }
 }

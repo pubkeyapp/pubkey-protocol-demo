@@ -2,11 +2,11 @@ import { type GoogleProfile, GoogleStrategy } from '@coji/remix-auth-google'
 import { type User } from '~/lib/db.server'
 import { IdentityProvider, Prisma } from '@prisma/client'
 import { logger } from '~/lib/logger'
-import { getUser } from '~/features/auth/data-access/get-user'
 import type { OAuth2Tokens } from 'arctic'
 import { userUpdateWithIdentity } from '~/lib/core/user-update-with-identity'
 import { identityFindByProviderId } from '~/lib/core/identity-find-by-provider-id'
 import { userCreateWithIdentity } from '~/lib/core/user-create-with-identity'
+import { getUserFromRequest } from '~/lib/core/get-user-from-request'
 
 const authGoogleClientId = process.env.AUTH_GOOGLE_CLIENT_ID
 const authGoogleClientSecret = process.env.AUTH_GOOGLE_CLIENT_SECRET
@@ -30,7 +30,7 @@ export const googleStrategy = new GoogleStrategy<User>(
 
     logger.info({ event: 'auth_google_login', message: 'Google login', userId: profile.id })
 
-    const existing = await getUser(request)
+    const existing = await getUserFromRequest(request)
     if (existing) {
       const updated = await userUpdateWithIdentity(existing.id, profile)
       logger.info({

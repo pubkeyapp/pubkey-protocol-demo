@@ -3,6 +3,7 @@ import { adminUserRoutes } from './features/user'
 import { onboardingRoutes } from './features/onboarding'
 import { devRoutes } from './features/dev'
 import { pubkeyRoutes } from './features/pubkey'
+import { pubkeyAuthRoutes } from './features/pubkey-auth'
 import { userSolanaRoutes } from './features/solana'
 
 export default [
@@ -25,6 +26,7 @@ export default [
   ]),
   devRoutes,
   pubkeyRoutes,
+  pubkeyAuthRoutes,
   layout('features/onboarding/layout-onboarding.tsx', [...onboardingRoutes]),
   // App routes go here
   layout('features/app/layout-app.tsx', [

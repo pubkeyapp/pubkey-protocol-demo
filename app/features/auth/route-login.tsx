@@ -5,8 +5,8 @@ import { logger } from '~/lib/logger'
 import { UiLogo } from '~/ui/ui-logo'
 import type { Route } from './+types/route-login'
 import { authHandleUserLoginRequest } from './data-access/auth-handle-user-login.request'
-import { getUser } from './data-access/get-user'
 import { AuthUiForm } from './ui/auth-ui-form'
+import { getUserFromRequest } from '~/lib/core/get-user-from-request'
 
 export function meta() {
   return appMeta('Login')
@@ -17,7 +17,7 @@ export async function action({ request }: Route.ActionArgs) {
 }
 
 export async function loader({ request }: Route.LoaderArgs) {
-  const user = await getUser(request)
+  const user = await getUserFromRequest(request)
   if (user) {
     logger.info({ event: 'auth_login_redirect', userId: user.id, message: 'User already logged in' })
     return redirect('/profile')

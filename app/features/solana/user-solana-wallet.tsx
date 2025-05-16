@@ -6,8 +6,8 @@ import { useWallet } from '@solana/wallet-adapter-react'
 import { solanaAuth } from '~/lib/solana-auth/solana-auth'
 import type { SolanaAuthMessage, SolanaAuthMessageSigned } from '~/lib/solana-auth/solana-auth-message'
 import { getUserBySolanaIdentity } from '~/features/auth/data-access/get-user-by-solana-identity'
-import { getUser } from '~/features/auth/data-access/get-user'
-import { getSolanaVerificationType, SolanaVerificationType } from './get-solana-verification-type'
+import { getSolanaVerificationType, SolanaVerificationType } from '~/lib/solana-auth/get-solana-verification-type'
+import { getUserFromRequest } from '~/lib/core/get-user-from-request'
 
 function parsePayload(payload: string = ''): SolanaAuthMessageSigned {
   try {
@@ -26,7 +26,7 @@ export async function action({ request }: Route.LoaderArgs) {
   if (!publicKey) {
     return { success: false, message: `No public key` }
   }
-  const actor = await getUser(request)
+  const actor = await getUserFromRequest(request)
   const owner = await getUserBySolanaIdentity({ providerId: publicKey })
 
   // This determines the type of verification we are performing

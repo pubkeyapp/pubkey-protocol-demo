@@ -38,6 +38,9 @@ type Params = {
   "/pubkey/profiles/:profile": {
     "profile": string;
   };
+  "/pubkey-auth": {};
+  "/pubkey-auth/database": {};
+  "/pubkey-auth/solana": {};
   "/onboarding": {};
   "/onboarding/wallets": {};
   "/onboarding/profile": {};

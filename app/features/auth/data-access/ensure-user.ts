@@ -1,7 +1,7 @@
-import { getUser } from "~/features/auth/data-access/get-user";
+import { getUserFromRequest } from '~/lib/core/get-user-from-request'
 
 export async function ensureUser(request: Request) {
-  const user = await getUser(request)
+  const user = await getUserFromRequest(request)
 
   if (!user) {
     throw new Error('User not found')

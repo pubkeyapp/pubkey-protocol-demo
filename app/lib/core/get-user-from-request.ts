@@ -1,8 +1,7 @@
 import { getSession } from '~/lib/sessions.server'
-import { logger } from "~/lib/logger";
-import { userFindById } from "~/lib/core/user-find-by-id";
+import { userFindById } from '~/lib/core/user-find-by-id'
 
-export async function getUser(request: Request) {
+export async function getUserFromRequest(request: Request) {
   const session = await getSession(request.headers.get('cookie'))
 
   const user = session.get('user')
@@ -11,9 +10,7 @@ export async function getUser(request: Request) {
   }
   const found = await userFindById(user.id)
   if (!found) {
-    logger.info({ event: 'auth_get_user', message: 'User not found in database' })
     return
   }
   return found
 }
-
