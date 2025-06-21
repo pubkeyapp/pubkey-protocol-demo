@@ -2,7 +2,7 @@
 /node_modules/
 
 # React Router
-/web/.react-router/
+/.react-router
 /build/
 .env
 
