@@ -1,4 +1,4 @@
-import { Button, Flex, Stack } from '@mantine/core'
+import { Button, Divider, Flex, Stack } from '@mantine/core'
 import { appMeta } from '~/lib/app-meta'
 import { Link } from 'react-router'
 
@@ -15,6 +15,13 @@ export default function RouteIndex() {
         </Button>
         <Button component={Link} to="/pubkey" size="xl" variant="filled">
           PubKey
+        </Button>
+        <Divider />
+        <Button component={Link} to="/api/auth/local" size="xl" variant="outline">
+          Local Sign Up
+        </Button>
+        <Button component={Link} to="/api/auth/google" size="xl" variant="outline">
+          Google Sign Up
         </Button>
       </Stack>
     </Flex>

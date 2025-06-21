@@ -3,11 +3,10 @@ import { authenticator } from '~/lib/authenticator.server'
 import { logger } from '~/lib/logger'
 import { commitSession, getSession } from '~/lib/sessions.server'
 import type { Route } from './+types/provider-callback'
+import { ensureSupportedProvider } from '~/api/auth/ensure-supported-provider'
 
 export async function loader({ params: { provider }, request }: Route.LoaderArgs) {
-  if (provider !== 'google') {
-    throw new Response(`Unsupported provider: ${provider}`, { status: 400 })
-  }
+  ensureSupportedProvider(provider)
   const user = await authenticator.authenticate(provider, request)
   if (!user) {
     logger.info({ event: 'auth_provider_login_error', message: `Login error for ${provider}` })
