@@ -1,7 +1,7 @@
 import { createCookieSessionStorage } from 'react-router'
 import { createThemeSessionResolver } from 'remix-themes'
 
-const appId = process.env.APP_ID ?? 'samui-stack'
+const appId = process.env.APP_ID ?? 'pubkey-protocol-demo'
 const domain = process.env.DOMAIN ?? 'localhost'
 const secret = process.env.COOKIE_SECRET ?? ''
 const secure = process.env.NODE_ENV === 'production'
