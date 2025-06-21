@@ -1,4 +1,4 @@
-import { db, type User, type UserUpdateInput, UserUpdateInputSchema } from "~/lib/db.server";
+import { db, type User, type UserUpdateInput, UserUpdateInputSchema } from '~/lib/db.server'
 
 export type UserUpdateProfileInput = Pick<UserUpdateInput, 'avatarUrl' | 'name' | 'username'>
 
@@ -14,16 +14,17 @@ export async function userUpdateProfile(id: string, input: UserUpdateProfileInpu
     throw new Error('User not found')
   }
 
-
   try {
     return db.user.update({
-      where: { id }, data: {
-        ...data, admin: found.admin, password: found.password
-      }
+      where: { id },
+      data: {
+        ...data,
+        admin: found.admin,
+        password: found.password,
+      },
     })
   } catch (error) {
     console.error(error)
     throw new Error('Failed to update user')
   }
 }
-

@@ -1,6 +1,6 @@
 import { getSession } from '~/lib/sessions.server'
-import { logger } from "~/lib/logger";
-import { userFindById } from "~/lib/core/user-find-by-id";
+import { logger } from '~/lib/logger'
+import { userFindById } from '~/lib/core/user-find-by-id'
 
 export async function getUser(request: Request) {
   const session = await getSession(request.headers.get('cookie'))
@@ -16,4 +16,3 @@ export async function getUser(request: Request) {
   }
   return found
 }
-

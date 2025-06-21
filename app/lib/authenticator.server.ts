@@ -2,7 +2,7 @@ import { Authenticator } from 'remix-auth'
 import { FormStrategy } from 'remix-auth-form'
 import { authUserLogin } from '~/features/auth/data-access/auth-user-login'
 import { type User } from '~/lib/db.server'
-import { googleStrategy } from './strategies/google-strategy';
+import { googleStrategy } from './strategies/google-strategy'
 
 export const authenticator = new Authenticator<User>()
 
@@ -13,7 +13,5 @@ const userPassStrategy = new FormStrategy(async ({ form }) => {
   })
 })
 
-authenticator.use(userPassStrategy, 'user-pass',)
+authenticator.use(userPassStrategy, 'user-pass')
 authenticator.use(googleStrategy, 'google')
-
-
