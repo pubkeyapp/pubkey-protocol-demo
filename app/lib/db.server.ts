@@ -1,4 +1,4 @@
-import { Prisma, type User } from '@prisma/client'
+import { type IdentityProvider, Prisma, type User } from '@prisma/client'
 import { createPrismaClientServer } from '~/lib/create-prisma-client.server'
 
 let db: AppPrismaClient
@@ -24,5 +24,5 @@ export type AppPrismaClient = ReturnType<typeof createPrismaClientServer>
 export type UserCreateInput = Prisma.UserCreateInput
 export type UserUpdateInput = Prisma.UserUpdateInput
 
-export { db, db as prisma, type User }
+export { db, db as prisma, type IdentityProvider, type User }
 export * from './generated/zod'

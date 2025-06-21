@@ -6,8 +6,8 @@ import { appMeta } from '~/lib/app-meta'
 import { UiPage } from '~/ui/ui-page'
 import type { Route } from './+types/admin-user-detail'
 import { userFindById } from './data-access/user-find-by-id'
-import { UserUiItem } from './ui/user-ui-avatar'
 import { UserUiFormUpdate } from './ui/user-ui-form-update'
+import { UserUiItem } from '~/features/user/ui/user-ui-item'
 
 export async function loader({ params: { id } }: Route.LoaderArgs) {
   const item = await userFindById(id)

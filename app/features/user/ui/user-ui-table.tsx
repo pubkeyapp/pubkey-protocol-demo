@@ -2,7 +2,8 @@ import { Anchor, Table, type TableProps, Text } from '@mantine/core'
 import { Link } from 'react-router'
 import type { User } from '~/lib/db.server'
 import { UiDeleteIcon } from '~/ui/ui-delete-icon'
-import { UserUiItem } from './user-ui-avatar'
+
+import { UserUiItem } from '~/features/user/ui/user-ui-item'
 
 export function UserUiTable({
   items,

@@ -1,6 +1,5 @@
 import React from 'react'
 import { redirect } from 'react-router'
-import { ensureUser } from '~/features/auth/data-access/ensure-user'
 import { UiFooter } from '~/ui/ui-footer'
 import type { UiHeaderLink } from '~/ui/ui-header'
 import { UiLayout } from '~/ui/ui-layout'
@@ -8,9 +7,10 @@ import { UiProfileMenu } from '~/ui/ui-profile-menu'
 import type { Route } from './+types/layout-app'
 import { Group } from '@mantine/core'
 import { WalletMultiIcon } from '@pubkeyapp/wallet-adapter-mantine-ui'
+import { getUser } from '~/features/auth/data-access/get-user'
 
 export async function loader({ request }: Route.LoaderArgs) {
-  const user = await ensureUser(request)
+  const user = await getUser(request)
   if (!user) {
     return redirect('/login')
   }

@@ -8,7 +8,7 @@ import { UiCard } from '~/ui/ui-card'
 import { UiContainer } from '~/ui/ui-container'
 import { UiDebug } from '~/ui/ui-debug'
 import { useThemes } from '~/ui/use-themes'
-import type { Route } from './+types/profile-feature'
+import type { Route } from './+types/profile-feature-manage'
 import { UiIcon } from '~/ui/ui-icon'
 import { IdentityProvider } from '@prisma/client'
 
@@ -25,7 +25,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   }
 }
 
-export async function action({ request, params: { id } }: Route.ActionArgs) {
+export async function action({ request }: Route.ActionArgs) {
   const user = await ensureUser(request)
   const formData = await request.formData()
 
@@ -48,7 +48,7 @@ export async function action({ request, params: { id } }: Route.ActionArgs) {
   }
 }
 
-export default function ProfileFeature({ loaderData }: Route.ComponentProps) {
+export default function ProfileFeatureManage({ loaderData }: Route.ComponentProps) {
   const { isDark } = useThemes()
   const backgroundColor = isDark ? 'rgba(0, 0, 0, 0.3)' : 'rgba(255, 255, 255, 0.1)'
 

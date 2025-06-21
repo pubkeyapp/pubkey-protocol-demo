@@ -17,8 +17,11 @@ export function UiProfileMenu({ user }: { user: User }) {
             Admin
           </Menu.Item>
         ) : null}
+        <Menu.Item component={Link} to={`/u/${user.username}`} leftSection={<LucideUser size={14} />}>
+          My Profile
+        </Menu.Item>
         <Menu.Item component={Link} to="/profile" leftSection={<LucideUser size={14} />}>
-          Profile
+          Manage Profile
         </Menu.Item>
         <Menu.Item disabled leftSection={<LucideSettings size={14} />} rightSection={<ComingSoon />}>
           Settings

@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import { computeUserAvatarUrl, defaultUserAvatarUrl } from '~/lib/compute-user-avatar-url'
+import { computeUserAvatarUrl, computeUserViewUrl, defaultUserAvatarUrl } from '~/lib/compute-user-avatar-url'
 
 export function createPrismaClientServer() {
   return new PrismaClient().$extends({
@@ -19,6 +19,7 @@ export function createPrismaClientServer() {
     result: {
       user: {
         avatarUrl: { compute: computeUserAvatarUrl },
+        viewUrl: { compute: computeUserViewUrl },
       },
     },
   })

@@ -1,7 +1,8 @@
 import { index, layout, prefix, route, type RouteConfig } from '@react-router/dev/routes'
 import { adminUserRoutes } from './features/user'
-import { onboardingRoutes } from './features/onboarding'
 import { devRoutes } from './features/dev'
+import { onboardingRoutes } from './features/onboarding'
+import { profileRoutes } from './features/profile'
 import { pubkeyRoutes } from './features/pubkey'
 import { userSolanaRoutes } from './features/solana'
 
@@ -29,13 +30,17 @@ export default [
   // App routes go here
   layout('features/app/layout-app.tsx', [
     route('dashboard', 'features/app/route-dashboard.tsx'),
-    route('profile', 'features/profile/profile-feature.tsx'),
+    route('profile', 'features/profile/profile-feature-manage.tsx'),
     userSolanaRoutes,
   ]),
   // Auth routes go here
   layout('features/auth/layout-auth.tsx', [
     route('login', 'features/auth/route-login.tsx'),
     route('logout', 'features/auth/route-logout.tsx'),
+  ]),
+  layout('features/profile/layout-profile.tsx', [
+    //
+    ...profileRoutes,
   ]),
   // Homepage routes go here
   layout('features/homepage/layout-homepage.tsx', [

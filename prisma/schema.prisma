@@ -19,6 +19,7 @@ model User {
   username   String     @unique
   password   String?
   name       String?
+  bio        String?
   avatarUrl  String?
   admin      Boolean    @default(false)
   identities Identity[]

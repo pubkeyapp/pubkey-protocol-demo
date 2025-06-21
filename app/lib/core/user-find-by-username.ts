@@ -1,5 +1,11 @@
-import { db, type User } from "~/lib/db.server";
+import { db } from '~/lib/db.server'
 
-export async function userFindByUsername(username: string): Promise<User | null> {
-  return await db.user.findFirst({ where: { username } })
+export async function userFindByUsername(username: string) {
+  const found = await db.user.findFirst({ where: { username }, include: { identities: true } })
+  if (!found) {
+    throw new Error('User not found')
+  }
+  return found
 }
+
+export type UserFindByUsernameResult = Awaited<ReturnType<typeof userFindByUsername>>

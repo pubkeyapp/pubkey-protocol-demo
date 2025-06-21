@@ -4,7 +4,7 @@ import { getPubkeySdkAuthority } from '~/lib/pubkey/get-pubkey-sdk-authority'
 
 export async function getPubkeyConfig(): Promise<PubKeyConfig | null> {
   const sdk = getPubkeySdkAuthority()
-  const config: PubKeyConfig | null = await sdk.configGetNullable()
+  const config: PubKeyConfig | null = await sdk.configGet({ nullable: true })
 
   if (!config || !config.communityAuthority) {
     return null

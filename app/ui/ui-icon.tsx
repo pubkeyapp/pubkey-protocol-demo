@@ -4,14 +4,12 @@ import { type IconName, iconNames } from './icons/types'
 import type { MantineSize } from '@mantine/core'
 import { LucideMessageCircleQuestion } from 'lucide-react'
 
-export function UiIcon({
-  name,
-  size = 'md',
-  ...props
-}: SVGProps<SVGSVGElement> & {
+export interface UiIconProps extends SVGProps<SVGSVGElement> {
   name: IconName
   size?: MantineSize
-}) {
+}
+
+export function UiIcon({ name, size = 'md', ...props }: UiIconProps) {
   const sizePx = getSize(size)
 
   if (!iconNames.includes(name)) {

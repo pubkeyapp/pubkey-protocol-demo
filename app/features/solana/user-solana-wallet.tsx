@@ -1,5 +1,5 @@
 import { Button, Flex, Group, Stack, Text } from '@mantine/core'
-import { useFetcher } from 'react-router'
+import { redirect, useFetcher } from 'react-router'
 import { getBase58Decoder, getBase58Encoder, type ReadonlyUint8Array } from 'gill'
 import type { Route } from './+types/user-solana-wallet'
 import { useWallet } from '@solana/wallet-adapter-react'
@@ -8,6 +8,10 @@ import type { SolanaAuthMessage, SolanaAuthMessageSigned } from '~/lib/solana-au
 import { getUserBySolanaIdentity } from '~/features/auth/data-access/get-user-by-solana-identity'
 import { getUser } from '~/features/auth/data-access/get-user'
 import { getSolanaVerificationType, SolanaVerificationType } from './get-solana-verification-type'
+import { userUpdateWithIdentity } from '~/lib/core/user-update-with-identity'
+import { userCreateWithIdentity } from '~/lib/core/user-create-with-identity'
+import { commitSession, getSession } from '~/lib/sessions.server'
+import { IdentityProvider } from '@prisma/client'
 
 function parsePayload(payload: string = ''): SolanaAuthMessageSigned {
   try {
@@ -64,15 +68,45 @@ export async function action({ request }: Route.LoaderArgs) {
       console.log(`sign message -> verify`, 'message', parsed, 'signature', parsed.signature, 'result', result)
       if (verification.type === SolanaVerificationType.Link) {
         // We should link the wallet to the actor.
+        if (!actor) {
+          throw new Error('No actor found')
+        }
+        await userUpdateWithIdentity(actor.id, {
+          provider: IdentityProvider.Solana,
+          providerId: publicKey,
+          name: publicKey,
+        })
       }
       if (verification.type === SolanaVerificationType.Login) {
         // We should set the cookie.
+        if (!owner) {
+          throw new Error('No owner found')
+        }
+        const session = await getSession(request.headers.get('Cookie'))
+        session.set('user', owner)
+        return redirect('/profile', {
+          headers: {
+            'Set-Cookie': await commitSession(session),
+          },
+        })
       }
       if (verification.type === SolanaVerificationType.Verify) {
         // We don't need to do anything? 🤷‍♂️
       }
       if (verification.type === SolanaVerificationType.Register) {
         // We should register a new user.
+        const user = await userCreateWithIdentity({
+          provider: IdentityProvider.Solana,
+          providerId: publicKey,
+          name: publicKey,
+        })
+        const session = await getSession(request.headers.get('Cookie'))
+        session.set('user', user)
+        return redirect('/profile', {
+          headers: {
+            'Set-Cookie': await commitSession(session),
+          },
+        })
       }
       return {
         success: true,
