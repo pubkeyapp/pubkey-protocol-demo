@@ -30,7 +30,7 @@ export default function RouteLogin() {
     <Flex direction="column" justify="center" align="center" h="100%">
       <Form method="post">
         <Group justify="center" my="lg" py="lg">
-          <UiLogo />
+          <UiLogo height={48} width={192} />
         </Group>
         <AuthUiForm title="Sign in to PubKey" />
       </Form>

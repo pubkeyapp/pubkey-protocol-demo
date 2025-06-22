@@ -9,7 +9,7 @@ export function ProfileUiPoweredBy() {
       <Text span mr="xs" fz="inherit">
         Powered by
       </Text>
-      <UiLogo size={20} />
+      <UiLogo height={24} width={96} />
     </Button>
   )
 }

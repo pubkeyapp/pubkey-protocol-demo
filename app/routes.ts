@@ -26,7 +26,6 @@ export default [
   ]),
   devRoutes,
   pubkeyRoutes,
-  layout('features/onboarding/layout-onboarding.tsx', [...onboardingRoutes]),
   // App routes go here
   layout('features/app/layout-app.tsx', [
     route('dashboard', 'features/app/route-dashboard.tsx'),
@@ -45,6 +44,9 @@ export default [
   // Homepage routes go here
   layout('features/homepage/layout-homepage.tsx', [
     index('features/homepage/route-index.tsx'),
+    route('terms', 'features/homepage/route-terms.tsx'),
+    route('privacy', 'features/homepage/route-privacy.tsx'),
     route('about', 'features/homepage/route-about.tsx'),
+    ...onboardingRoutes,
   ]),
 ] satisfies RouteConfig

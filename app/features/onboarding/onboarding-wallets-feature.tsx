@@ -6,7 +6,12 @@ export default function OnboardingFeature() {
   const { connect, select, wallets } = useWallet()
 
   return (
-    <OnboardingUiPage title="Connect Solana wallet" description="Connect a Solana wallet, you can later add more.">
+    <OnboardingUiPage
+      previousLink="/onboarding"
+      nextLink="/onboarding/profile"
+      title="Connect Solana wallet"
+      description="Connect a Solana wallet, you can later add more."
+    >
       <OnboardingUiWallets
         handleClick={async (w) => {
           select(w.name)

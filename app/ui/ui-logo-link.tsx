@@ -1,11 +1,11 @@
 import { Anchor } from '@mantine/core'
 import { Link } from 'react-router'
-import { type AppLogoProps, UiLogo } from './ui-logo'
+import { UiLogo, type UiLogoProps } from './ui-logo'
 
-export function UiLogoLink({ to = '/', ...props }: AppLogoProps & { to?: string }) {
+export function UiLogoLink({ to = '/', ...props }: UiLogoProps & { to?: string }) {
   return (
     <Anchor component={Link} to={to} underline="never">
-      <UiLogo {...props} />
+      <UiLogo height={24} width={96} {...props} />
     </Anchor>
   )
 }

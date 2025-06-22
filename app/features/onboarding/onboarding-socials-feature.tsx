@@ -12,7 +12,11 @@ export default function OnboardingSocialsFeature({ loaderData: { providers } }: 
   const navigate = useNavigate()
 
   return (
-    <OnboardingUiPage title="Sign in" description="Sign in using a Social identity, you can later add more.">
+    <OnboardingUiPage
+      nextLink="/onboarding/wallets"
+      title="Sign in"
+      description="Sign in using a Social identity, you can later add more."
+    >
       <OnboardingUiSocials
         handleClick={() => {
           navigate('/onboarding/wallets')

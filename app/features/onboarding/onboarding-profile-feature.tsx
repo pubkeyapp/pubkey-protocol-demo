@@ -6,7 +6,12 @@ import { sleep } from '~/lib/sleep'
 export default function OnboardingFeature() {
   const navigate = useNavigate()
   return (
-    <OnboardingUiPage title="Create your profile" description="Your profile will be stored on Solana.">
+    <OnboardingUiPage
+      previousLink="/onboarding/wallets"
+      nextLink="/onboarding/done"
+      title="Create your profile"
+      description="Your profile will be stored on Solana."
+    >
       <OnboardingUiProfile
         submit={async (vals) => {
           console.log('Submit vals', vals)

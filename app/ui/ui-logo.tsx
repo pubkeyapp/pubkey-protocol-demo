@@ -1,16 +1,14 @@
-import { Group, Image } from '@mantine/core'
+import { Image } from '@mantine/core'
 import { useUi } from './ui-context'
 
-export interface AppLogoProps {
+export interface UiLogoProps {
+  height?: number
   size?: number
+  width?: number
 }
 
-export function UiLogo({ size = 42 }: AppLogoProps) {
+export function UiLogo({ height, size = 42, width }: UiLogoProps) {
   const { config } = useUi()
 
-  return (
-    <Group align="center" gap="xs" wrap="nowrap">
-      <Image src={config.logo} alt="logo" height={size} width={size} />
-    </Group>
-  )
+  return <Image src={config.logo} alt="logo" h={height ?? size} w={width ?? size} />
 }
