@@ -1,17 +1,17 @@
 import type { Identity } from '~/lib/generated/zod'
 import { ActionIcon, Card, CopyButton, Group, Stack, Text, Tooltip } from '@mantine/core'
-import { ProfileUiProviderIcon } from '~/features/profile/ui/profile-ui-provider-icon'
 import { ProfileUiIdentityName } from '~/features/profile/profile-ui-identity-name'
 import { UiIcon } from '~/ui/ui-icon'
 import { getIdentityUrl } from '~/features/profile/get-identity-url'
 import React from 'react'
+import { ProfileUiProfileAvatar } from '~/features/profile/ui/profile-ui-profile-avatar'
 
 export function ProfileUiIdentityListItem({ identity }: { identity: Identity }) {
   return (
     <Card withBorder bg="inherit" shadow="sm" radius="lg" p={0}>
       <Group px="lg" py="md" justify="space-between" align="center">
         <Group>
-          <ProfileUiProviderIcon provider={identity.provider} size="lg" />
+          <ProfileUiProfileAvatar identity={identity} />
           <Stack gap={0}>
             <Text size="md" fw={500}>
               {identity.provider}

@@ -49,7 +49,7 @@ export default function ProfileFeatureDetail({ loaderData: { profile, user } }: 
         ) : null}
       </Stack>
       <Flex justify="center">
-        <ProfileUiPoweredBy to={user ? '/dashboard' : '/'} />
+        <ProfileUiPoweredBy mt="xl" to={user ? '/dashboard' : '/'} />
       </Flex>
     </Container>
   )

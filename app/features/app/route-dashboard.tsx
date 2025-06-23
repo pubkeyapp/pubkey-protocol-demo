@@ -111,7 +111,13 @@ export default function RouteDashboard({ loaderData: { user } }: Route.Component
           radius="lg"
         >
           {steps.map((item) => (
-            <Accordion.Item key={item.value} value={item.value}>
+            <Accordion.Item
+              key={item.value}
+              value={item.value}
+              style={{
+                borderColor: done.includes(item.value) ? 'var(--mantine-color-green-5)' : undefined,
+              }}
+            >
               <Accordion.Control color={'red'} icon={item.emoji}>
                 {item.label}
               </Accordion.Control>

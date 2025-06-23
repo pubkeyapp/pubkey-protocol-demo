@@ -1,24 +1,18 @@
 import { Button, Flex, Group, Stack, Text } from '@mantine/core'
-import { redirect, useFetcher } from 'react-router'
-import { getBase58Decoder, getBase58Encoder, type ReadonlyUint8Array } from 'gill'
+import { getBase58Decoder } from 'gill'
 import type { Route } from './+types/user-solana-wallet'
 import { useWallet } from '@solana/wallet-adapter-react'
-import { solanaAuth } from '~/lib/solana-auth/solana-auth'
 import type { SolanaAuthMessage, SolanaAuthMessageSigned } from '~/lib/solana-auth/solana-auth-message'
-import { getUserBySolanaIdentity } from '~/features/auth/data-access/get-user-by-solana-identity'
 import { getUser } from '~/features/auth/data-access/get-user'
-import { getSolanaVerificationType, SolanaVerificationType } from './get-solana-verification-type'
-import { userUpdateWithIdentity } from '~/lib/core/user-update-with-identity'
-import { userCreateWithIdentity } from '~/lib/core/user-create-with-identity'
-import { commitSession, getSession } from '~/lib/sessions.server'
-import { IdentityProvider } from '@prisma/client'
+import { useSolanaAuth } from '~/features/solana/use-solana-auth'
+import { SolanaSignMessageButton } from '~/features/solana/solana-sign-message-button'
+import { handleSolanaVerification } from '~/features/solana/handle-solana-verification'
+import { useCallback } from 'react'
 
-function parsePayload(payload: string = ''): SolanaAuthMessageSigned {
-  try {
-    return JSON.parse(payload)
-  } catch {
-    throw new Error(`Invalid payload`)
-  }
+export async function loader(args: Route.LoaderArgs) {
+  const user = await getUser(args.request)
+
+  return { user }
 }
 
 export async function action({ request }: Route.LoaderArgs) {
@@ -30,167 +24,53 @@ export async function action({ request }: Route.LoaderArgs) {
   if (!publicKey) {
     return { success: false, message: `No public key` }
   }
-  const actor = await getUser(request)
-  const owner = await getUserBySolanaIdentity({ providerId: publicKey })
 
-  // This determines the type of verification we are performing
-  const verification = getSolanaVerificationType({
-    actorId: actor?.id ?? undefined,
-    ownerId: owner?.id ?? undefined,
-    enabledTypes: [
-      SolanaVerificationType.Login,
-      SolanaVerificationType.Link,
-      SolanaVerificationType.Register,
-      SolanaVerificationType.Verify,
-    ],
-  })
-  if (verification.type === SolanaVerificationType.Error) {
-    return { success: false, message: verification.message }
-  }
-
-  console.log(
-    `user-solana-wallet [${action}] -> publicKey: ${publicKey} -> owner: ${owner ? owner.username : 'NONE'} -> type: ${verification.type}`,
-  )
-
-  switch (formData.get('action')) {
-    case 'sign-message-create':
-      return {
-        success: true,
-        message: await solanaAuth.createMessage({ method: 'solana:signMessage', publicKey }),
-        type: 'solana-auth-message',
-      }
-    case 'sign-message-verify':
-      const parsed = parsePayload(payload)
-      const result = await solanaAuth.verifyMessage(parsed)
-      if (!result) {
-        throw new Error('Invalid signature')
-      }
-      console.log(`sign message -> verify`, 'message', parsed, 'signature', parsed.signature, 'result', result)
-      if (verification.type === SolanaVerificationType.Link) {
-        // We should link the wallet to the actor.
-        if (!actor) {
-          throw new Error('No actor found')
-        }
-        await userUpdateWithIdentity(actor.id, {
-          provider: IdentityProvider.Solana,
-          providerId: publicKey,
-          name: publicKey,
-        })
-      }
-      if (verification.type === SolanaVerificationType.Login) {
-        // We should set the cookie.
-        if (!owner) {
-          throw new Error('No owner found')
-        }
-        const session = await getSession(request.headers.get('Cookie'))
-        session.set('user', owner)
-        return redirect('/dashboard', {
-          headers: {
-            'Set-Cookie': await commitSession(session),
-          },
-        })
-      }
-      if (verification.type === SolanaVerificationType.Verify) {
-        // We don't need to do anything? 🤷‍♂️
-      }
-      if (verification.type === SolanaVerificationType.Register) {
-        // We should register a new user.
-        const user = await userCreateWithIdentity({
-          provider: IdentityProvider.Solana,
-          providerId: publicKey,
-          name: publicKey,
-        })
-        const session = await getSession(request.headers.get('Cookie'))
-        session.set('user', user)
-        return redirect('/dashboard', {
-          headers: {
-            'Set-Cookie': await commitSession(session),
-          },
-        })
-      }
-      return {
-        success: true,
-        message: result,
-        type: 'solana-auth-result',
-      }
-    case 'sign-transaction-create':
-      return {
-        success: true,
-        message: await solanaAuth.createMessage({ method: 'solana:signTransaction', publicKey }),
-        type: 'solana-auth-message',
-      }
-    default:
-      return {
-        success: false,
-        message: `Unknown action ${action}`,
-      }
-  }
+  return await handleSolanaVerification({ action, request, payload, publicKey })
 }
 
-export default function UserSolanaWallet() {
+export default function UserSolanaWallet({ loaderData: { user } }: Route.ComponentProps) {
   const wallet = useWallet()
   const publicKey = wallet.publicKey?.toString() ?? ''
-  const fetcher = useFetcher()
+  const { fetcher, handleCreateSignMessage, handleVerifySignMessage } = useSolanaAuth({
+    publicKey,
+  })
+  const sign = useCallback(
+    async (message: SolanaAuthMessage) => {
+      if (!wallet.signMessage) {
+        return
+      }
+      const result = await createSignatureWallet({
+        message,
+        signMessage: wallet.signMessage,
+      })
+      return await sign(result)
+    },
+    [wallet.signMessage],
+  )
 
-  async function handleSubmit(data: Record<string, string>) {
-    return await fetcher.submit(data, { method: 'post' })
-  }
-
-  async function handleCreate(action: 'sign-message-create' | 'sign-transaction-create') {
-    if (!publicKey.length) {
-      console.warn(`No public key, please connect your wallet`)
-      return
-    }
-    await handleSubmit({ action, publicKey })
-  }
-
-  async function handleVerify(
-    action: 'sign-message-verify' | 'sign-transaction-verify',
-    payload: SolanaAuthMessageSigned,
-  ) {
-    if (!publicKey.length) {
-      console.warn(`No public key, please connect your wallet`)
-      return
-    }
-    await handleSubmit({ action, publicKey, payload: JSON.stringify(payload) })
-  }
+  const walletIdentity = user?.identities.find((i) => i.provider === 'Solana' && i.providerId === publicKey)
 
   return (
     <Flex direction="column" align="center" justify="center" h="100%">
       <Stack align="center" gap="xl">
         {publicKey.length ? (
           <Stack align="center">
-            <Text size="xl">Connected to</Text>
+            <Text size="xl">Connected to {walletIdentity ? 'your' : ''} wallet</Text>
             <Text size="xs" ff="monospace">
               {publicKey}
             </Text>
           </Stack>
         ) : null}
         <Group>
-          <Button
-            disabled={!publicKey}
-            loading={fetcher.state === 'submitting'}
-            onClick={() => handleCreate('sign-message-create')}
-          >
-            Verify by signing a message
-          </Button>
-          <Button
-            disabled={!publicKey}
-            loading={fetcher.state === 'submitting'}
-            onClick={() => handleCreate('sign-transaction-create')}
-          >
-            Verify by signing a transaction
-          </Button>
+          <SolanaSignMessageButton fetcher={fetcher} publicKey={publicKey} onClick={() => handleCreateSignMessage()} />
         </Group>
         {fetcher.data?.type === 'solana-auth-message' ? (
           <div>
-            <SignComponent
-              message={fetcher.data.message}
-              sign={(payload) => handleVerify('sign-message-verify', payload)}
-            />
+            <SignComponent message={fetcher.data.message} sign={(payload) => handleVerifySignMessage(payload)} />
             <pre>{JSON.stringify(fetcher.data.message, null, 2)}</pre>
           </div>
         ) : null}
+        <pre>{JSON.stringify({ ...walletIdentity, profile: undefined }, null, 2)}</pre>
       </Stack>
     </Flex>
   )
@@ -233,10 +113,6 @@ export interface CreateSignatureWallet {
 
 export function bs58Encode(data: Uint8Array) {
   return getBase58Decoder().decode(data)
-}
-
-export function bs58Decode(data: string): ReadonlyUint8Array {
-  return getBase58Encoder().encode(data)
 }
 
 export async function createSignatureWallet({
