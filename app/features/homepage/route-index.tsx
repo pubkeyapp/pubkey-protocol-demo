@@ -43,7 +43,7 @@ export default function RouteIndex() {
         <Title order={2}>Get Started</Title>
         <Text>Ready to join the social layer on Solana? Sign up now and create your PubKey profile.</Text>
         <Text>
-          <Anchor component={Link} to="/onboarding">
+          <Anchor component={Link} to="/login">
             Sign Up Now
           </Anchor>
         </Text>
@@ -77,7 +77,7 @@ export default function RouteIndex() {
       </Stack>
 
       <Group my="xl" justify="center">
-        <Button leftSection={<LucideRocket />} component={Link} to="/onboarding" size="xl" variant="filled">
+        <Button leftSection={<LucideRocket />} component={Link} to="/login" size="xl" variant="filled">
           Get Started
         </Button>
       </Group>

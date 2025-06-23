@@ -1,8 +1,7 @@
-import { Flex, Group } from '@mantine/core'
+import { Flex } from '@mantine/core'
 import { data, Form, redirect } from 'react-router'
 import { appMeta } from '~/lib/app-meta'
 import { logger } from '~/lib/logger'
-import { UiLogo } from '~/ui/ui-logo'
 import type { Route } from './+types/route-login'
 import { authHandleUserLoginRequest } from './data-access/auth-handle-user-login.request'
 import { getUser } from './data-access/get-user'
@@ -29,9 +28,6 @@ export default function RouteLogin() {
   return (
     <Flex direction="column" justify="center" align="center" h="100%">
       <Form method="post">
-        <Group justify="center" my="lg" py="lg">
-          <UiLogo height={48} width={192} />
-        </Group>
         <AuthUiForm title="Sign in to PubKey" />
       </Form>
     </Flex>

@@ -35,7 +35,7 @@ export function HomepageUiHero() {
             </Text>
 
             <Group mt="xl">
-              <Button component={Link} to="/onboarding" size="lg" leftSection={<LucideRocket />}>
+              <Button component={Link} to="/login" size="lg" leftSection={<LucideRocket />}>
                 Get Started
               </Button>
               <Button

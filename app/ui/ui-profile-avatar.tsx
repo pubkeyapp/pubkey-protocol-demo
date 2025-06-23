@@ -1,15 +1,15 @@
-import { Avatar, Button, Menu } from '@mantine/core'
-import { LucideLogOut, LucideShieldCheck, LucideUser } from 'lucide-react'
-import { Link } from 'react-router'
 import type { User } from '~/lib/db.server'
+import { ActionIcon, Avatar, Menu } from '@mantine/core'
+import { Link } from 'react-router'
+import { LucideLogOut, LucideShieldCheck, LucideUser } from 'lucide-react'
 
-export function UiProfileMenu({ user }: { user: User }) {
+export function UiProfileAvatar({ user }: { user: User }) {
   return (
     <Menu shadow="md" width={200}>
       <Menu.Target>
-        <Button size="xs" variant="light" leftSection={<Avatar src={user.avatarUrl} size="xs" />}>
-          {user.username}
-        </Button>
+        <ActionIcon size="md" variant="light" radius="xl">
+          <Avatar src={user.avatarUrl} size="sm" />
+        </ActionIcon>
       </Menu.Target>
       <Menu.Dropdown>
         {user.admin ? (

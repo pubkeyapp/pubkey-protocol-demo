@@ -33,20 +33,15 @@ export default [
     userSolanaRoutes,
   ]),
   // Auth routes go here
-  layout('features/auth/layout-auth.tsx', [
-    route('login', 'features/auth/route-login.tsx'),
-    route('logout', 'features/auth/route-logout.tsx'),
-  ]),
-  layout('features/profile/layout-profile.tsx', [
-    //
-    ...profileRoutes,
-  ]),
+  layout('features/auth/layout-auth.tsx', [route('logout', 'features/auth/route-logout.tsx')]),
   // Homepage routes go here
   layout('features/homepage/layout-homepage.tsx', [
     index('features/homepage/route-index.tsx'),
+    route('login', 'features/auth/route-login.tsx'),
     route('terms', 'features/homepage/route-terms.tsx'),
     route('privacy', 'features/homepage/route-privacy.tsx'),
     route('about', 'features/homepage/route-about.tsx'),
+    ...profileRoutes,
     ...onboardingRoutes,
   ]),
 ] satisfies RouteConfig

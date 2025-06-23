@@ -156,7 +156,7 @@ export default function UserSolanaWallet() {
   }
 
   return (
-    <Flex direction="column" align="center" justify="center" h="100%" style={{ border: '2px dotted hotpink' }}>
+    <Flex direction="column" align="center" justify="center" h="100%">
       <Stack align="center" gap="xl">
         {publicKey.length ? (
           <Stack align="center">
