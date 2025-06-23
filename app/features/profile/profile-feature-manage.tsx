@@ -19,6 +19,10 @@ export function meta() {
 export async function loader({ request }: Route.LoaderArgs) {
   try {
     const user = await ensureUser(request)
+    if (!user?.identities?.length) {
+      console.log(`not user`, user)
+      return redirect('/login')
+    }
     return { user, providers: Object.values(IdentityProvider) }
   } catch {
     return redirect('/login')
@@ -59,7 +63,7 @@ export default function ProfileFeatureManage({ loaderData }: Route.ComponentProp
           <ProfileUiFormUpdate user={loaderData.user}></ProfileUiFormUpdate>
         </UiCard>
         <UiCard title="Social Identities" style={{ backgroundColor }} shadow="md" withBorder={false}>
-          {loaderData.user.identities.map((item) => (
+          {loaderData.user.identities?.map((item) => (
             <div key={item.id}>
               <Text size="sm" fw={500}>
                 {item.name}

@@ -82,18 +82,6 @@ const steps = [
 ]
 
 export default function RouteDashboard({ loaderData: { user } }: Route.ComponentProps) {
-  const active = useMemo(() => {
-    if (!user || !user.identities?.length) {
-      return 0
-    }
-    if (user.identities.length === 1) {
-      return 1
-    }
-    if (user.identities.find((i) => i.provider === 'Solana')) {
-      return 2
-    }
-  }, [user])
-
   const done = useMemo(() => stepsDone({ user }), [user])
   const nextStep = useMemo(() => {
     const next = steps.find((step) => !done.includes(step.value))
@@ -162,11 +150,11 @@ function stepsDone({ user }: { user: User }): string[] {
 }
 
 function findUserIdentitiesSocial({ user }: { user: User }) {
-  return user.identities.filter((i) => i.provider !== 'Solana')
+  return user.identities?.filter((i) => i.provider !== 'Solana') ?? []
 }
 
 function findUserIdentitiesSolana({ user }: { user: User }) {
-  return user.identities.filter((i) => i.provider === 'Solana')
+  return user.identities?.filter((i) => i.provider === 'Solana') ?? []
 }
 
 function PanelSocial({ user }: { user: User }) {

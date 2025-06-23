@@ -12,7 +12,7 @@ interface CommitSessionAndRedirectOptions {
 export async function commitSessionAndRedirect({ request, to = '/dashboard', user }: CommitSessionAndRedirectOptions) {
   const session = await getSessionFromCookie(request)
 
-  session.set('user', user)
+  session.set('userId', user.id)
 
   return redirect(to, {
     headers: {

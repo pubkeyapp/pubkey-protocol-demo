@@ -7,6 +7,7 @@ import type { OAuth2Tokens } from 'arctic'
 import { userUpdateWithIdentity } from '~/lib/core/user-update-with-identity'
 import { identityFindByProviderId } from '~/lib/core/identity-find-by-provider-id'
 import { userCreateWithIdentity } from '~/lib/core/user-create-with-identity'
+import type { IdentityProfile } from './identity-profile'
 
 const authGithubClientId = process.env.AUTH_GITHUB_CLIENT_ID
 const authGithubClientSecret = process.env.AUTH_GITHUB_CLIENT_SECRET
@@ -34,7 +35,7 @@ export const githubStrategy = new GitHubStrategy<User>(
     logger.info({ event: 'auth_github_login', message: 'GitHub login', userId: profile.id })
 
     const existing = await getUser(request)
-    if (existing) {
+    if (existing?.id) {
       const updated = await userUpdateWithIdentity(existing.id, profile)
       logger.info({
         event: 'auth_github_login',
@@ -59,16 +60,14 @@ interface GitHubProfile {
 }
 
 function convertProfileToUser(input: GitHubProfile, tokens: OAuth2Tokens): Prisma.IdentityCreateWithoutOwnerInput {
-  console.log(`convertProfileToUser`, input, tokens)
-  // const username = input.displayName.replace(' ', '')
-  // const name = input.displayName
-  // const email = input.emails[0].value
-  // const avatarUrl = input.photos[0].value
-  // const profile: IdentityProfile = { username, avatarUrl, raw: input }
-
   const name = input.name
   const address = input.login
-  const profile: IdentityProfile = { username: input.login, avatarUrl: input.avatar_url, raw: input }
+  const profile: IdentityProfile = {
+    bio: input.bio,
+    username: input.login,
+    avatarUrl: input.avatar_url,
+    raw: input,
+  }
 
   return {
     accessToken: tokens.accessToken(),
@@ -80,12 +79,6 @@ function convertProfileToUser(input: GitHubProfile, tokens: OAuth2Tokens): Prism
     profile: profile as Prisma.InputJsonValue,
     verified: true,
   }
-}
-
-export interface IdentityProfile {
-  username?: string
-  avatarUrl?: string
-  raw?: unknown
 }
 
 async function getGitHubProfile(token: string) {

@@ -11,7 +11,7 @@ export function ProfileUiProfileAvatar({
   iconProps?: Omit<UiIconProps, 'name'>
   identity: Identity
 }) {
-  const avatarUrl = (identity.profile as Record<string, string>)['avatarUrl']
+  const avatarUrl = (identity?.profile as Record<string, string>)?.avatarUrl
   if (avatarUrl) {
     return <Avatar src={avatarUrl} {...props} />
   }

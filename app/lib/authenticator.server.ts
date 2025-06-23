@@ -4,6 +4,7 @@ import { authUserLogin } from '~/features/auth/data-access/auth-user-login'
 import { type User } from '~/lib/db.server'
 import { googleStrategy } from './strategies/google-strategy'
 import { githubStrategy } from './strategies/github-strategy'
+import { xStrategy } from './strategies/x-strategy'
 
 export const authenticator = new Authenticator<User>()
 
@@ -17,3 +18,4 @@ const userPassStrategy = new FormStrategy(async ({ form }) => {
 authenticator.use(userPassStrategy, 'user-pass')
 authenticator.use(githubStrategy, 'github')
 authenticator.use(googleStrategy, 'google')
+authenticator.use(xStrategy, 'x')
