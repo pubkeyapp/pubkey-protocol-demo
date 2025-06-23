@@ -13,7 +13,7 @@ export async function authHandleUserLoginRequest(request: Request) {
   session.set('user', user)
 
   logger.info({ event: 'auth_login_success', userId: user.id })
-  return redirect('/profile', {
+  return redirect('/dashboard', {
     headers: {
       'Set-Cookie': await commitSession(session),
     },

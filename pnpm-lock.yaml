@@ -116,6 +116,9 @@ importers:
       remix-auth-form:
         specifier: ^3.0.0
         version: 3.0.0(remix-auth@4.2.0)
+      remix-auth-github:
+        specifier: ^3.0.2
+        version: 3.0.2(remix-auth@4.2.0)
       remix-auth-oauth2:
         specifier: ^3.4.1
         version: 3.4.1(remix-auth@4.2.0)
@@ -1024,6 +1027,9 @@ packages:
 
   '@mjackson/headers@0.10.0':
     resolution: {integrity: sha512-U1Eu1gF979k7ZoIBsJyD+T5l9MjtPONsZfoXfktsQHPJD0s7SokBGx+tLKDLsOY+gzVYAWS0yRFDNY8cgbQzWQ==}
+
+  '@mjackson/headers@0.9.0':
+    resolution: {integrity: sha512-1WFCu2iRaqbez9hcYYI611vcH1V25R+fDfOge/CyKc8sdbzniGfy/FRhNd3DgvFF4ZEEX2ayBrvFHLtOpfvadw==}
 
   '@mjackson/node-fetch-server@0.2.0':
     resolution: {integrity: sha512-EMlH1e30yzmTpGLQjlFmaDAjyOeZhng1/XCd7DExR8PNAnG/G1tyruZxEoUe11ClnwGhGrtsdnyyUx1frSzjng==}
@@ -3920,6 +3926,12 @@ packages:
     peerDependencies:
       remix-auth: ^4.0.0
 
+  remix-auth-github@3.0.2:
+    resolution: {integrity: sha512-3XxykdwMrcPSyMsdGtBDl3DBc19gJM3t7q/1uzfz3g/SJRsxEytjGiQ17ztKykebCGM454Z0lVJMvSb+LF/yHA==}
+    engines: {node: ^18.0.0 || ^20.0.0 || >=20.0.0}
+    peerDependencies:
+      remix-auth: ^4.0.0
+
   remix-auth-oauth2@3.4.1:
     resolution: {integrity: sha512-ZhGon1czdIsOw1/O9EcTCzapZB6FpT3u9vtXSVeEMwGNs+iWljRsibnUC1RtwJbzzCdLBSwIXTNTbiRmLZ4cZw==}
     engines: {node: ^20.0.0 || >=20.0.0}
@@ -5423,6 +5435,8 @@ snapshots:
       '@metaplex-foundation/umi-serializers': 1.2.0
 
   '@mjackson/headers@0.10.0': {}
+
+  '@mjackson/headers@0.9.0': {}
 
   '@mjackson/node-fetch-server@0.2.0': {}
 
@@ -8858,6 +8872,15 @@ snapshots:
   remix-auth-form@3.0.0(remix-auth@4.2.0):
     dependencies:
       remix-auth: 4.2.0
+
+  remix-auth-github@3.0.2(remix-auth@4.2.0):
+    dependencies:
+      '@mjackson/headers': 0.9.0
+      arctic: 3.7.0
+      debug: 4.4.1
+      remix-auth: 4.2.0
+    transitivePeerDependencies:
+      - supports-color
 
   remix-auth-oauth2@3.4.1(remix-auth@4.2.0):
     dependencies:

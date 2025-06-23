@@ -5,7 +5,7 @@ import { commitSession, getSession } from '~/lib/sessions.server'
 import type { Route } from './+types/provider-callback'
 
 export async function loader({ params: { provider }, request }: Route.LoaderArgs) {
-  if (provider !== 'google') {
+  if (provider !== 'google' && provider !== 'github') {
     throw new Response(`Unsupported provider: ${provider}`, { status: 400 })
   }
   const user = await authenticator.authenticate(provider, request)
@@ -18,7 +18,7 @@ export async function loader({ params: { provider }, request }: Route.LoaderArgs
   const session = await getSession(request.headers.get('Cookie'))
   session.set('user', user)
 
-  return redirect('/profile', {
+  return redirect('/dashboard', {
     headers: {
       'Set-Cookie': await commitSession(session),
     },

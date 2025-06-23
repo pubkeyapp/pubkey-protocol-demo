@@ -84,7 +84,7 @@ export async function action({ request }: Route.LoaderArgs) {
         }
         const session = await getSession(request.headers.get('Cookie'))
         session.set('user', owner)
-        return redirect('/profile', {
+        return redirect('/dashboard', {
           headers: {
             'Set-Cookie': await commitSession(session),
           },
@@ -102,7 +102,7 @@ export async function action({ request }: Route.LoaderArgs) {
         })
         const session = await getSession(request.headers.get('Cookie'))
         session.set('user', user)
-        return redirect('/profile', {
+        return redirect('/dashboard', {
           headers: {
             'Set-Cookie': await commitSession(session),
           },
