@@ -18,8 +18,8 @@ export default function OnboardingFeature() {
         </Card.Section>
         <Card.Section p="sm">
           <Stack style={{ overflow: 'auto' }} py="md">
-            <Anchor component={Link} to="/profile">
-              Go to Profile
+            <Anchor component={Link} to="/dashboard">
+              Go to Dashboard
             </Anchor>
           </Stack>
         </Card.Section>

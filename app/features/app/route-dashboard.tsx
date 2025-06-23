@@ -82,18 +82,6 @@ const steps = [
 ]
 
 export default function RouteDashboard({ loaderData: { user } }: Route.ComponentProps) {
-  const active = useMemo(() => {
-    if (!user || !user.identities?.length) {
-      return 0
-    }
-    if (user.identities.length === 1) {
-      return 1
-    }
-    if (user.identities.find((i) => i.provider === 'Solana')) {
-      return 2
-    }
-  }, [user])
-
   const done = useMemo(() => stepsDone({ user }), [user])
   const nextStep = useMemo(() => {
     const next = steps.find((step) => !done.includes(step.value))
@@ -111,7 +99,13 @@ export default function RouteDashboard({ loaderData: { user } }: Route.Component
           radius="lg"
         >
           {steps.map((item) => (
-            <Accordion.Item key={item.value} value={item.value}>
+            <Accordion.Item
+              key={item.value}
+              value={item.value}
+              style={{
+                borderColor: done.includes(item.value) ? 'var(--mantine-color-green-5)' : undefined,
+              }}
+            >
               <Accordion.Control color={'red'} icon={item.emoji}>
                 {item.label}
               </Accordion.Control>
@@ -156,11 +150,11 @@ function stepsDone({ user }: { user: User }): string[] {
 }
 
 function findUserIdentitiesSocial({ user }: { user: User }) {
-  return user.identities.filter((i) => i.provider !== 'Solana')
+  return user.identities?.filter((i) => i.provider !== 'Solana') ?? []
 }
 
 function findUserIdentitiesSolana({ user }: { user: User }) {
-  return user.identities.filter((i) => i.provider === 'Solana')
+  return user.identities?.filter((i) => i.provider === 'Solana') ?? []
 }
 
 function PanelSocial({ user }: { user: User }) {

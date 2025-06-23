@@ -16,12 +16,17 @@ export async function action({ request }: Route.ActionArgs) {
 }
 
 export async function loader({ request }: Route.LoaderArgs) {
-  const user = await getUser(request)
-  if (user) {
-    logger.info({ event: 'auth_login_redirect', userId: user.id, message: 'User already logged in' })
-    return redirect('/profile')
+  try {
+    const user = await getUser(request)
+    if (user) {
+      logger.info({ event: 'auth_login_redirect', userId: user.id, message: 'User already logged in' })
+      console.log(`user`, user)
+      return redirect('/dashboard')
+    }
+    return data(null)
+  } catch {
+    logger.info({ event: 'auth_login_redirect', message: 'User not logged in' })
   }
-  return data(null)
 }
 
 export default function RouteLogin() {

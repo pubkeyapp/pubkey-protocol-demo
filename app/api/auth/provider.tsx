@@ -1,9 +1,9 @@
 import { authenticator } from '~/lib/authenticator.server'
 import type { Route } from './+types/provider'
 
+import { guardSocialProvider } from '~/lib/auth/guard-social-provider'
+
 export const loader = async ({ params: { provider }, request }: Route.LoaderArgs) => {
-  if (provider !== 'google') {
-    throw new Response(`Unsupported provider: ${provider}`, { status: 400 })
-  }
+  guardSocialProvider(provider)
   return await authenticator.authenticate(provider, request)
 }

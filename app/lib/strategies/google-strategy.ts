@@ -7,6 +7,7 @@ import type { OAuth2Tokens } from 'arctic'
 import { userUpdateWithIdentity } from '~/lib/core/user-update-with-identity'
 import { identityFindByProviderId } from '~/lib/core/identity-find-by-provider-id'
 import { userCreateWithIdentity } from '~/lib/core/user-create-with-identity'
+import type { IdentityProfile } from './identity-profile'
 
 const authGoogleClientId = process.env.AUTH_GOOGLE_CLIENT_ID
 const authGoogleClientSecret = process.env.AUTH_GOOGLE_CLIENT_SECRET
@@ -31,7 +32,7 @@ export const googleStrategy = new GoogleStrategy<User>(
     logger.info({ event: 'auth_google_login', message: 'Google login', userId: profile.id })
 
     const existing = await getUser(request)
-    if (existing) {
+    if (existing?.id) {
       const updated = await userUpdateWithIdentity(existing.id, profile)
       logger.info({
         event: 'auth_google_login',
@@ -64,10 +65,4 @@ function convertProfileToUser(input: GoogleProfile, tokens: OAuth2Tokens): Prism
     profile: profile as Prisma.InputJsonValue,
     verified: true,
   }
-}
-
-export interface IdentityProfile {
-  username?: string
-  avatarUrl?: string
-  raw?: unknown
 }

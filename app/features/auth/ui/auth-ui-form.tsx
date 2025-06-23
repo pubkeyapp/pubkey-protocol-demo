@@ -11,6 +11,14 @@ export function AuthUiForm({ title }: { title: string }) {
         </Text>
         <Button
           component={Link}
+          to="/api/auth/github"
+          leftSection={<UiIcon name="Github" height={20} width={20} />}
+          size="xl"
+        >
+          Sign in with GitHub
+        </Button>
+        <Button
+          component={Link}
           to="/api/auth/google"
           leftSection={<UiIcon name="Google" height={20} width={20} />}
           size="xl"
